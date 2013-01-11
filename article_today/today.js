@@ -1,16 +1,16 @@
 jQuery(document).ready(function($) {
 	// Kill the link
 	$('#grab_date').attr('href', 'javascript:void(0);');
- 
- 	// AJAX call to the function
-  $('#grab_date').click(function() {
+
+		// AJAX call to the function
+	$('#grab_date').click(function() {
 		$.ajax({
- 			type: "GET",
+			type: "GET",
 			url: "/grab_date",
- 			data: "node=" + $("#grab_date").attr("node"),
- 			success: function(msg){
-				eval(msg);
- 			}	
+			data: "node=" + $("#grab_date").attr("node"),
+				success: function(msg){
+					eval(msg);
+				}	
 		});
 
 		// Building arrays for days' and months' names
