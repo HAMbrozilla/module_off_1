@@ -3,6 +3,7 @@
 function article_today_menu() {
   	$items = array();
  
+ 		// Setting the path and callback functions for the AJAX call
   	$items['grab_date'] = array(
     		'page callback' => 'grab_date',
     		'access arguments' => TRUE,
@@ -14,8 +15,10 @@ function article_today_menu() {
 
 //Add in the link field
 function article_today_node_view($node, $view_mode, $langcode) {
+
 	// Make sure we are on an Article
 	if ($node->type == 'article') {
+
 		// Add the JS file to the page
 		$path = drupal_get_path('module', 'article_today');
 		drupal_add_js($path . '/today.js');
@@ -26,11 +29,15 @@ function article_today_node_view($node, $view_mode, $langcode) {
 	    '#weight' => 20, 
 	  );
 	}
+
 }
 
 // Callback function to update database
 function grab_date() {
+	// Grabbing the node ID from the URL parameter
 	$nid = $_GET['node'];
+
+	// Getting the GMT date and time for the db
 	$date = gmdate("Y-m-d H:i:s");
 	
 	// Update the field in the database
