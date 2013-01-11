@@ -1,0 +1,6 @@
+name = Article Today
+description = Sets an Article Date to today.
+core = 7.x
+package = Module Off
+
+; NEW LINE

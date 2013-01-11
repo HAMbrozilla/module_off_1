@@ -1,0 +1,45 @@
+<?
+// Set the callback 
+function article_today_menu() {
+  	$items = array();
+ 
+  	$items['grab_date'] = array(
+    		'page callback' => 'grab_date',
+    		'access arguments' => TRUE,
+    		'type' => MENU_CALLBACK,
+  	);
+ 
+  	return $items;
+}
+
+//Add in the link field
+function article_today_node_view($node, $view_mode, $langcode) {
+	// Make sure we are on an Article
+	if ($node->type == 'article') {
+		// Add the JS file to the page
+		$path = drupal_get_path('module', 'article_today');
+		drupal_add_js($path . '/today.js');
+
+		// Add the link field
+		$node->content['set_today'] = array(
+	    '#markup' => '<a id="grab_date" href="#" node="'.$node->nid.'">Set as Today</a><br /><span id="status"></span>', 
+	    '#weight' => 20, 
+	  );
+	}
+}
+
+// Callback function to update database
+function grab_date() {
+	$nid = $_GET['node'];
+	$date = gmdate("Y-m-d H:i:s");
+	
+	// Update the field in the database
+	// Alter field and table names accordingly
+	$query = "UPDATE field_data_field_article_date SET field_article_date_value = :datetime WHERE entity_id = :entity_id";
+	$rs = db_query($query, array(':datetime' => $date, ':entity_id' => $nid));
+
+	// Delete the field cache so the changes are reflected immediately on the next page load
+	// Alter field and table names accordingly
+	$query = "DELETE FROM cache_field WHERE cid = :cid";
+	$rs = db_query($query, array(':cid' => 'field:node:'.$nid));
+}
